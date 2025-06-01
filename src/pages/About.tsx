@@ -10,7 +10,7 @@ const About = () => {
               About <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">DigitalVista</span>
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in animation-delay-300">
-              We are a passionate team of digital experts dedicated to helping businesses thrive in the digital world 
+              We are a passionate team of digital experts, fresh in the market and dedicated to helping businesses thrive in the digital world 
               through innovative solutions and cutting-edge technology.
             </p>
           </div>
@@ -28,15 +28,15 @@ const About = () => {
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
               <p className="text-gray-600 mb-6">
                 Founded with a vision to bridge the gap between traditional businesses and the digital future, 
-                DigitalVista has been at the forefront of digital transformation for over 5 years.
+                DigitalVista is a new player in the market with fresh ideas and innovative approaches.
               </p>
               <p className="text-gray-600 mb-6">
-                We started as a small team of passionate developers and designers, and have grown into a 
-                comprehensive digital agency that serves clients across various industries.
+                As a newly established team of passionate developers, designers, and digital strategists, 
+                we bring modern solutions and the latest technologies to help businesses establish their digital presence.
               </p>
               <p className="text-gray-600">
-                Our commitment to excellence, innovation, and client satisfaction has made us a trusted 
-                partner for businesses looking to establish and grow their digital presence.
+                Our commitment to excellence, innovation, and client satisfaction drives us to deliver 
+                exceptional results and build lasting partnerships with businesses ready to embrace digital transformation.
               </p>
             </div>
           </div>
@@ -90,23 +90,23 @@ const About = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Why Choose Us?</h2>
-            <p className="text-xl text-gray-600">What sets us apart from the competition</p>
+            <p className="text-xl text-gray-600">What sets us apart as a new organization</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-all duration-300">
-              <div className="text-3xl font-bold text-purple-600 mb-2">5+</div>
-              <div className="text-gray-600 font-medium">Years of Experience</div>
+              <div className="text-3xl font-bold text-purple-600 mb-2">Fresh</div>
+              <div className="text-gray-600 font-medium">Innovative Ideas</div>
             </div>
 
             <div className="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-all duration-300">
-              <div className="text-3xl font-bold text-blue-600 mb-2">150+</div>
-              <div className="text-gray-600 font-medium">Successful Projects</div>
+              <div className="text-3xl font-bold text-blue-600 mb-2">Latest</div>
+              <div className="text-gray-600 font-medium">Technologies</div>
             </div>
 
             <div className="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-all duration-300">
-              <div className="text-3xl font-bold text-purple-600 mb-2">98%</div>
-              <div className="text-gray-600 font-medium">Client Satisfaction</div>
+              <div className="text-3xl font-bold text-purple-600 mb-2">100%</div>
+              <div className="text-gray-600 font-medium">Dedication</div>
             </div>
 
             <div className="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-all duration-300">

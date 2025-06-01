@@ -55,16 +55,16 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div className="animate-fade-in">
-              <div className="text-4xl md:text-5xl font-bold text-purple-600 mb-2">150+</div>
-              <div className="text-gray-600">Projects Completed</div>
+              <div className="text-4xl md:text-5xl font-bold text-purple-600 mb-2">10+</div>
+              <div className="text-gray-600">Projects in Pipeline</div>
             </div>
             <div className="animate-fade-in animation-delay-200">
-              <div className="text-4xl md:text-5xl font-bold text-blue-600 mb-2">98%</div>
-              <div className="text-gray-600">Client Satisfaction</div>
+              <div className="text-4xl md:text-5xl font-bold text-blue-600 mb-2">100%</div>
+              <div className="text-gray-600">Dedication to Quality</div>
             </div>
             <div className="animate-fade-in animation-delay-400">
-              <div className="text-4xl md:text-5xl font-bold text-purple-600 mb-2">5+</div>
-              <div className="text-gray-600">Years Experience</div>
+              <div className="text-4xl md:text-5xl font-bold text-purple-600 mb-2">Fresh</div>
+              <div className="text-gray-600">Innovative Approach</div>
             </div>
             <div className="animate-fade-in animation-delay-600">
               <div className="text-4xl md:text-5xl font-bold text-blue-600 mb-2">24/7</div>
