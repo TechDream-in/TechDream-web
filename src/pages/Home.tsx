@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { ArrowDown } from 'lucide-react';
 
@@ -37,10 +36,10 @@ const Home = () => {
               Start Your Project
             </Link>
             <Link
-              to="/services"
+              to="/portfolio"
               className="border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white hover:text-gray-900 transition-all duration-300"
             >
-              View Our Services
+              View Our Work
             </Link>
           </div>
         </div>
@@ -115,9 +114,15 @@ const Home = () => {
           <div className="text-center">
             <Link
               to="/services"
-              className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105"
+              className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 mr-4"
             >
               View All Services
+            </Link>
+            <Link
+              to="/portfolio"
+              className="border-2 border-purple-600 text-purple-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-purple-600 hover:text-white transition-all duration-300"
+            >
+              See Our Work
             </Link>
           </div>
         </div>
