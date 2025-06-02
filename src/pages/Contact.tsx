@@ -1,9 +1,10 @@
-
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 const Contact = () => {
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -19,23 +20,48 @@ const Contact = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+    setIsSubmitting(true);
     
-    toast({
-      title: "Message Sent!",
-      description: "Thank you for contacting us. We'll get back to you within 24 hours.",
-    });
+    try {
+      console.log('Submitting form data:', formData);
+      
+      // Call the edge function to send emails
+      const { data, error } = await supabase.functions.invoke('send-contact-email', {
+        body: formData
+      });
 
-    // Reset form
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      service: '',
-      message: ''
-    });
+      if (error) {
+        console.error('Error calling edge function:', error);
+        throw error;
+      }
+
+      console.log('Email sent successfully:', data);
+      
+      toast({
+        title: "Message Sent Successfully!",
+        description: "Thank you for contacting us. We've sent you a confirmation email and will get back to you within 24 hours.",
+      });
+
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        service: '',
+        message: ''
+      });
+    } catch (error: any) {
+      console.error('Error submitting form:', error);
+      toast({
+        title: "Error Sending Message",
+        description: "There was an issue sending your message. Please try again or contact us directly.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -73,7 +99,8 @@ const Contact = () => {
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                      disabled={isSubmitting}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 disabled:opacity-50"
                       placeholder="Enter your full name"
                     />
                   </div>
@@ -89,7 +116,8 @@ const Contact = () => {
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                      disabled={isSubmitting}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 disabled:opacity-50"
                       placeholder="Enter your email address"
                     />
                   </div>
@@ -104,7 +132,8 @@ const Contact = () => {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                      disabled={isSubmitting}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 disabled:opacity-50"
                       placeholder="Enter your phone number"
                     />
                   </div>
@@ -119,7 +148,8 @@ const Contact = () => {
                       value={formData.service}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                      disabled={isSubmitting}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 disabled:opacity-50"
                     >
                       <option value="">Select a service</option>
                       <option value="web-development">Web Development</option>
@@ -141,17 +171,19 @@ const Contact = () => {
                       value={formData.message}
                       onChange={handleChange}
                       required
+                      disabled={isSubmitting}
                       rows={5}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 disabled:opacity-50"
                       placeholder="Tell us about your project requirements..."
                     ></textarea>
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-4 px-6 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105"
+                    disabled={isSubmitting}
+                    className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-4 px-6 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                   >
-                    Send Message
+                    {isSubmitting ? 'Sending Message...' : 'Send Message'}
                   </button>
                 </form>
               </div>
