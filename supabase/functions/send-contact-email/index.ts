@@ -1,20 +1,26 @@
+
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
+
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type"
 };
-const handler = async (req)=>{
+
+const handler = async (req) => {
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, {
       headers: corsHeaders
     });
   }
+
   try {
     const formData = await req.json();
     console.log('Received contact form data:', formData);
+
     // Send notification email to help@digitalvista.com
     const notificationEmail = await resend.emails.send({
       from: "DigitalVista Contact <noreply@codetechinfosystem.com>",
@@ -58,7 +64,9 @@ const handler = async (req)=>{
         </div>
       `
     });
+
     console.log('Notification email sent:', notificationEmail);
+
     // Send confirmation email to the user
     const confirmationEmail = await resend.emails.send({
       from: "DigitalVista Team <noreply@codetechinfosystem.com>",
@@ -87,12 +95,16 @@ const handler = async (req)=>{
               </ul>
             </div>
             <p style="color: #666; line-height: 1.6;">
-              In the meantime, feel free to explore our portfolio and learn more about our services. 
-              If you have any urgent questions, don't hesitate to reach out to us directly.
+              In the meantime, feel free to explore our portfolio and learn more about our services.
             </p>
             <div style="text-align: center; margin: 30px 0;">
-              <div style="background: linear-gradient(135deg, #9333ea 0%, #2563eb 100%); color: white; padding: 15px 25px; border-radius: 25px; display: inline-block;">
-                <strong>📞 Ready to talk? Let's schedule your free consultation!</strong>
+              <div style="margin-bottom: 20px;">
+                <a href="https://digitalvista.lovable.app/services" style="background: linear-gradient(135deg, #9333ea 0%, #2563eb 100%); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block; margin: 0 10px; font-weight: bold;">
+                  View Our Services
+                </a>
+                <a href="https://digitalvista.lovable.app/portfolio" style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block; margin: 0 10px; font-weight: bold;">
+                  See Our Portfolio
+                </a>
               </div>
             </div>
             <hr style="border: none; height: 1px; background: #eee; margin: 30px 0;">
@@ -109,7 +121,9 @@ const handler = async (req)=>{
         </div>
       `
     });
+
     console.log('Confirmation email sent:', confirmationEmail);
+
     return new Response(JSON.stringify({
       success: true,
       notificationId: notificationEmail.data?.id,
@@ -134,4 +148,5 @@ const handler = async (req)=>{
     });
   }
 };
+
 serve(handler);
