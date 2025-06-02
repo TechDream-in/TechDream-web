@@ -1,4 +1,3 @@
-
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
 
@@ -27,6 +26,7 @@ const handler = async (req) => {
       to: [
         "sourabh.patware+help@codetechinfosystem.com"
       ],
+      reply_to: formData.email,
       subject: `New Contact Form Submission - ${formData.service}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
