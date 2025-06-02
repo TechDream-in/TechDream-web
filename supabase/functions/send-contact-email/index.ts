@@ -61,7 +61,7 @@ const handler = async (req)=>{
     console.log('Notification email sent:', notificationEmail);
     // Send confirmation email to the user
     const confirmationEmail = await resend.emails.send({
-      from: "DigitalVista Team <noreply@digitalvista.com>",
+      from: "DigitalVista Team <noreply@codetechinfosystem.com>",
       to: [
         formData.email
       ],
