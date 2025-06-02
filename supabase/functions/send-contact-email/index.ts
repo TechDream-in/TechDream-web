@@ -1,36 +1,26 @@
-
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
-
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
-
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type"
 };
-
-interface ContactFormData {
-  name: string;
-  email: string;
-  phone: string;
-  service: string;
-  message: string;
-}
-
-const handler = async (req: Request): Promise<Response> => {
+const handler = async (req)=>{
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, {
+      headers: corsHeaders
+    });
   }
-
   try {
-    const formData: ContactFormData = await req.json();
+    const formData = await req.json();
     console.log('Received contact form data:', formData);
-
     // Send notification email to help@digitalvista.com
     const notificationEmail = await resend.emails.send({
-      from: "DigitalVista Contact <noreply@digitalvista.com>",
-      to: ["help@digitalvista.com"],
+      from: "DigitalVista Contact <noreply@codetechinfosystem.com>",
+      to: [
+        "sourabh.patware+help@codetechinfosystem.com"
+      ],
       subject: `New Contact Form Submission - ${formData.service}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
@@ -66,15 +56,15 @@ const handler = async (req: Request): Promise<Response> => {
             </p>
           </div>
         </div>
-      `,
+      `
     });
-
     console.log('Notification email sent:', notificationEmail);
-
     // Send confirmation email to the user
     const confirmationEmail = await resend.emails.send({
       from: "DigitalVista Team <noreply@digitalvista.com>",
-      to: [formData.email],
+      to: [
+        formData.email
+      ],
       subject: "Thank you for contacting DigitalVista!",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
@@ -117,35 +107,31 @@ const handler = async (req: Request): Promise<Response> => {
             </div>
           </div>
         </div>
-      `,
+      `
     });
-
     console.log('Confirmation email sent:', confirmationEmail);
-
-    return new Response(
-      JSON.stringify({ 
-        success: true, 
-        notificationId: notificationEmail.data?.id,
-        confirmationId: confirmationEmail.data?.id 
-      }),
-      {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-          ...corsHeaders,
-        },
+    return new Response(JSON.stringify({
+      success: true,
+      notificationId: notificationEmail.data?.id,
+      confirmationId: confirmationEmail.data?.id
+    }), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+        ...corsHeaders
       }
-    );
-  } catch (error: any) {
+    });
+  } catch (error) {
     console.error("Error sending emails:", error);
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json", ...corsHeaders },
+    return new Response(JSON.stringify({
+      error: error.message
+    }), {
+      status: 500,
+      headers: {
+        "Content-Type": "application/json",
+        ...corsHeaders
       }
-    );
+    });
   }
 };
-
 serve(handler);
