@@ -1,11 +1,72 @@
+
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
+import DOMPurify from "npm:dompurify@latest";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type"
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "X-Frame-Options": "DENY",
+  "X-Content-Type-Options": "nosniff",
+  "Referrer-Policy": "strict-origin-when-cross-origin"
+};
+
+// In-memory rate limiting store (consider using Supabase for production)
+const rateLimitStore = new Map();
+const RATE_LIMIT_WINDOW = 60 * 60 * 1000; // 1 hour
+const MAX_REQUESTS_PER_HOUR = 3;
+
+const sanitizeInput = (input: string): string => {
+  if (typeof input !== 'string') return '';
+  return DOMPurify.sanitize(input.trim());
+};
+
+const validateFormData = (formData: any) => {
+  const errors = [];
+  
+  if (!formData.name || formData.name.length < 2 || formData.name.length > 100) {
+    errors.push("Name must be between 2 and 100 characters");
+  }
+  
+  if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    errors.push("Valid email address is required");
+  }
+  
+  if (formData.phone && formData.phone.length > 20) {
+    errors.push("Phone number is too long");
+  }
+  
+  if (!formData.service || formData.service.length < 1) {
+    errors.push("Service selection is required");
+  }
+  
+  if (!formData.message || formData.message.length < 10 || formData.message.length > 2000) {
+    errors.push("Message must be between 10 and 2000 characters");
+  }
+  
+  return errors;
+};
+
+const checkRateLimit = (clientIP: string): boolean => {
+  const now = Date.now();
+  const clientRequests = rateLimitStore.get(clientIP) || [];
+  
+  // Remove expired requests
+  const validRequests = clientRequests.filter((timestamp: number) => 
+    now - timestamp < RATE_LIMIT_WINDOW
+  );
+  
+  if (validRequests.length >= MAX_REQUESTS_PER_HOUR) {
+    return false;
+  }
+  
+  // Add current request
+  validRequests.push(now);
+  rateLimitStore.set(clientIP, validRequests);
+  
+  return true;
 };
 
 const handler = async (req) => {
@@ -17,8 +78,64 @@ const handler = async (req) => {
   }
 
   try {
+    // Get client IP for rate limiting
+    const clientIP = req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || "unknown";
+    
+    // Check rate limit
+    if (!checkRateLimit(clientIP)) {
+      console.log(`Rate limit exceeded for IP: ${clientIP}`);
+      return new Response(JSON.stringify({
+        error: "Too many requests. Please try again later."
+      }), {
+        status: 429,
+        headers: {
+          "Content-Type": "application/json",
+          ...corsHeaders
+        }
+      });
+    }
+
     const formData = await req.json();
-    console.log('Received contact form data:', formData);
+    console.log('Contact form submission from IP:', clientIP);
+
+    // Validate form data
+    const validationErrors = validateFormData(formData);
+    if (validationErrors.length > 0) {
+      return new Response(JSON.stringify({
+        error: "Validation failed",
+        details: validationErrors
+      }), {
+        status: 400,
+        headers: {
+          "Content-Type": "application/json",
+          ...corsHeaders
+        }
+      });
+    }
+
+    // Sanitize all inputs
+    const sanitizedData = {
+      name: sanitizeInput(formData.name),
+      email: sanitizeInput(formData.email),
+      phone: sanitizeInput(formData.phone || ''),
+      service: sanitizeInput(formData.service),
+      message: sanitizeInput(formData.message)
+    };
+
+    // Check for honeypot field (if present, it's likely a bot)
+    if (formData.website || formData.url) {
+      console.log('Potential bot submission detected (honeypot triggered)');
+      // Return success to avoid revealing the honeypot
+      return new Response(JSON.stringify({
+        success: true
+      }), {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+          ...corsHeaders
+        }
+      });
+    }
 
     // Send notification email to help@digitalvista.com
     const notificationEmail = await resend.emails.send({
@@ -26,8 +143,8 @@ const handler = async (req) => {
       to: [
         "sourabh.patware+help@codetechinfosystem.com"
       ],
-      reply_to: formData.email,
-      subject: `New Contact Form Submission - ${formData.service}`,
+      reply_to: sanitizedData.email,
+      subject: `New Contact Form Submission - ${sanitizedData.service}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
           <div style="background: linear-gradient(135deg, #9333ea 0%, #2563eb 100%); color: white; padding: 20px; border-radius: 8px 8px 0 0;">
@@ -38,24 +155,24 @@ const handler = async (req) => {
             <table style="width: 100%; border-collapse: collapse;">
               <tr>
                 <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #666;">Name:</td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${formData.name}</td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${sanitizedData.name}</td>
               </tr>
               <tr>
                 <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #666;">Email:</td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${formData.email}</td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${sanitizedData.email}</td>
               </tr>
               <tr>
                 <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #666;">Phone:</td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${formData.phone || 'Not provided'}</td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${sanitizedData.phone || 'Not provided'}</td>
               </tr>
               <tr>
                 <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #666;">Service:</td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${formData.service}</td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${sanitizedData.service}</td>
               </tr>
             </table>
             <h3 style="color: #333; margin-top: 20px;">Message:</h3>
             <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; border-left: 4px solid #9333ea;">
-              ${formData.message}
+              ${sanitizedData.message}
             </div>
             <p style="margin-top: 20px; color: #666; font-size: 14px;">
               This email was sent from the DigitalVista contact form.
@@ -65,13 +182,13 @@ const handler = async (req) => {
       `
     });
 
-    console.log('Notification email sent:', notificationEmail);
+    console.log('Notification email sent successfully');
 
     // Send confirmation email to the user
     const confirmationEmail = await resend.emails.send({
       from: "DigitalVista Team <noreply@codetechinfosystem.com>",
       to: [
-        formData.email
+        sanitizedData.email
       ],
       subject: "Thank you for contacting DigitalVista!",
       html: `
@@ -81,10 +198,10 @@ const handler = async (req) => {
             <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;">We've received your message</p>
           </div>
           <div style="background: white; padding: 30px; border-radius: 0 0 8px 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-            <h2 style="color: #333; margin-top: 0;">Hello ${formData.name}!</h2>
+            <h2 style="color: #333; margin-top: 0;">Hello ${sanitizedData.name}!</h2>
             <p style="color: #666; line-height: 1.6; font-size: 16px;">
               Thank you for reaching out to DigitalVista. We have successfully received your inquiry about 
-              <strong style="color: #9333ea;">${formData.service}</strong> and appreciate your interest in our services.
+              <strong style="color: #9333ea;">${sanitizedData.service}</strong> and appreciate your interest in our services.
             </p>
             <div style="background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%); padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #9333ea;">
               <h3 style="margin: 0 0 10px 0; color: #333;">What happens next?</h3>
@@ -122,12 +239,11 @@ const handler = async (req) => {
       `
     });
 
-    console.log('Confirmation email sent:', confirmationEmail);
+    console.log('Confirmation email sent successfully');
 
     return new Response(JSON.stringify({
       success: true,
-      notificationId: notificationEmail.data?.id,
-      confirmationId: confirmationEmail.data?.id
+      message: "Message sent successfully"
     }), {
       status: 200,
       headers: {
@@ -136,9 +252,11 @@ const handler = async (req) => {
       }
     });
   } catch (error) {
-    console.error("Error sending emails:", error);
+    console.error("Error in contact form submission:", error);
+    
+    // Don't expose internal error details
     return new Response(JSON.stringify({
-      error: error.message
+      error: "An error occurred while processing your request. Please try again later."
     }), {
       status: 500,
       headers: {

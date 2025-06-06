@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -22,6 +23,44 @@ const Contact = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Client-side validation
+    if (!formData.name || formData.name.length < 2) {
+      toast({
+        title: "Validation Error",
+        description: "Name must be at least 2 characters long.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      toast({
+        title: "Validation Error",
+        description: "Please enter a valid email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!formData.service) {
+      toast({
+        title: "Validation Error",
+        description: "Please select a service.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!formData.message || formData.message.length < 10) {
+      toast({
+        title: "Validation Error",
+        description: "Message must be at least 10 characters long.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     
     try {
@@ -54,11 +93,21 @@ const Contact = () => {
       });
     } catch (error: any) {
       console.error('Error submitting form:', error);
-      toast({
-        title: "Error Sending Message",
-        description: "There was an issue sending your message. Please try again or contact us directly.",
-        variant: "destructive",
-      });
+      
+      // Handle rate limiting
+      if (error.message?.includes('Too many requests')) {
+        toast({
+          title: "Rate Limit Exceeded",
+          description: "You've sent too many messages recently. Please try again in an hour.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Error Sending Message",
+          description: "There was an issue sending your message. Please try again or contact us directly.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -88,6 +137,18 @@ const Contact = () => {
                 <h2 className="text-3xl font-bold text-gray-900 mb-6">Get a Free Quote</h2>
                 
                 <form onSubmit={handleSubmit} className="space-y-6">
+                  {/* Honeypot field - hidden from users but visible to bots */}
+                  <div className="hidden">
+                    <label htmlFor="website">Website (leave blank)</label>
+                    <input
+                      type="text"
+                      id="website"
+                      name="website"
+                      tabIndex={-1}
+                      autoComplete="off"
+                    />
+                  </div>
+
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
                       Full Name *
@@ -100,6 +161,7 @@ const Contact = () => {
                       onChange={handleChange}
                       required
                       disabled={isSubmitting}
+                      maxLength={100}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 disabled:opacity-50"
                       placeholder="Enter your full name"
                     />
@@ -133,6 +195,7 @@ const Contact = () => {
                       value={formData.phone}
                       onChange={handleChange}
                       disabled={isSubmitting}
+                      maxLength={20}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 disabled:opacity-50"
                       placeholder="Enter your phone number"
                     />
@@ -173,9 +236,13 @@ const Contact = () => {
                       required
                       disabled={isSubmitting}
                       rows={5}
+                      maxLength={2000}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 disabled:opacity-50"
                       placeholder="Tell us about your project requirements..."
                     ></textarea>
+                    <div className="text-sm text-gray-500 mt-1">
+                      {formData.message.length}/2000 characters
+                    </div>
                   </div>
 
                   <button
