@@ -1,3 +1,4 @@
+
 import { Link } from 'react-router-dom';
 import { ArrowDown } from 'lucide-react';
 
@@ -16,9 +17,9 @@ const Home = () => {
         </div>
 
         <div className="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
+          <h1 className="text-5xl md:text-7xl font-bold mb-8 animate-fade-in">
             Transform Your
-            <span className="block bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent pb-4">
               Digital Presence
             </span>
           </h1>
@@ -112,18 +113,20 @@ const Home = () => {
           </div>
 
           <div className="text-center">
-            <Link
-              to="/services"
-              className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 mr-4"
-            >
-              View All Services
-            </Link>
-            <Link
-              to="/portfolio"
-              className="border-2 border-purple-600 text-purple-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-purple-600 hover:text-white transition-all duration-300"
-            >
-              See Our Work
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                to="/services"
+                className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105"
+              >
+                View All Services
+              </Link>
+              <Link
+                to="/portfolio"
+                className="border-2 border-purple-600 text-purple-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-purple-600 hover:text-white transition-all duration-300"
+              >
+                See Our Work
+              </Link>
+            </div>
           </div>
         </div>
       </section>

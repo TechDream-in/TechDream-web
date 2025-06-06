@@ -225,7 +225,7 @@ const Contact = () => {
                 <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-8 rounded-xl">
                   <h3 className="text-xl font-bold mb-4">Ready to Get Started?</h3>
                   <p className="mb-4">
-                    Join over 150+ satisfied clients who have transformed their businesses with our digital solutions.
+                    Join our growing community of satisfied clients who have transformed their businesses with our digital solutions.
                   </p>
                   <div className="flex items-center space-x-4">
                     <div className="flex-1">
@@ -233,8 +233,8 @@ const Contact = () => {
                       <div className="text-sm text-purple-100">Client Satisfaction</div>
                     </div>
                     <div className="flex-1">
-                      <div className="text-2xl font-bold">5+</div>
-                      <div className="text-sm text-purple-100">Years Experience</div>
+                      <div className="text-2xl font-bold">Fresh</div>
+                      <div className="text-sm text-purple-100">New Company</div>
                     </div>
                   </div>
                 </div>
