@@ -216,10 +216,10 @@ const handler = async (req) => {
             </p>
             <div style="text-align: center; margin: 30px 0;">
               <div style="margin-bottom: 20px;">
-                <a href="https://digitalvista.lovable.app/services" style="background: linear-gradient(135deg, #9333ea 0%, #2563eb 100%); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block; margin: 0 10px; font-weight: bold;">
+                <a href="https://techdream.in/services" style="background: linear-gradient(135deg, #9333ea 0%, #2563eb 100%); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block; margin: 0 10px; font-weight: bold;">
                   View Our Services
                 </a>
-                <a href="https://digitalvista.lovable.app/portfolio" style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block; margin: 0 10px; font-weight: bold;">
+                <a href="https://techdream.in/portfolio" style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block; margin: 0 10px; font-weight: bold;">
                   See Our Portfolio
                 </a>
               </div>
