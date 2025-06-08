@@ -1,10 +1,7 @@
 
-import { Play, ExternalLink, Eye, X } from 'lucide-react';
-import { useState } from 'react';
+import { Play, ExternalLink, Eye } from 'lucide-react';
 
 const Portfolio = () => {
-  const [selectedMedia, setSelectedMedia] = useState<{type: 'video' | 'poster', src: string, title: string} | null>(null);
-
   const webProjects = [
     {
       id: 1,
@@ -32,58 +29,12 @@ const Portfolio = () => {
     }
   ];
 
-  const posterProjects = [
-    {
-      id: 1,
-      title: "Fitness Club Campaign",
-      description: "High-impact poster design for gym membership drive",
-      image: "/lovable-uploads/8ae60bcd-0276-4d1e-a1e3-cf8beb66d60d.png",
-      category: "Digital Marketing"
-    },
-    {
-      id: 2,
-      title: "Fitness Motivation Series",
-      description: "Social media poster for fitness club engagement",
-      image: "/lovable-uploads/9594843c-de10-4599-8dab-bb197d770255.png",
-      category: "Digital Marketing"
-    },
-    {
-      id: 3,
-      title: "Job Recruitment Campaign",
-      description: "Professional hiring poster for tech positions",
-      image: "/lovable-uploads/a07ea9d2-8d9b-4939-8d1b-30fb4167bbd1.png",
-      category: "Digital Marketing"
-    },
-    {
-      id: 4,
-      title: "Digital Marketing Agency",
-      description: "Corporate branding poster for marketing services",
-      image: "/lovable-uploads/1084f4d9-d3a5-40ba-af30-0c8df0870937.png",
-      category: "Digital Marketing"
-    },
-    {
-      id: 5,
-      title: "Educational Course Promotion",
-      description: "SQL development course marketing material",
-      image: "/lovable-uploads/e1e0305c-8c33-4502-a416-830d52a22dcf.png",
-      category: "Digital Marketing"
-    },
-    {
-      id: 6,
-      title: "Coffee Brand Campaign",
-      description: "Premium coffee product promotion poster",
-      image: "/lovable-uploads/9b0988a7-7a3c-488c-951a-3c6e9412f43f.png",
-      category: "Digital Marketing"
-    }
-  ];
-
   const videoProjects = [
     {
       id: 1,
       title: "Product Launch Video",
       description: "Promotional video for tech startup product launch",
       thumbnail: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=800&q=80",
-      videoSrc: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
       duration: "2:30",
       category: "Video Editing"
     },
@@ -92,7 +43,6 @@ const Portfolio = () => {
       title: "Corporate Training Video",
       description: "Educational video series for employee onboarding",
       thumbnail: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=800&q=80",
-      videoSrc: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
       duration: "5:45",
       category: "Video Editing"
     },
@@ -101,19 +51,10 @@ const Portfolio = () => {
       title: "Social Media Campaign",
       description: "Series of short promotional videos for Instagram and TikTok",
       thumbnail: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=800&q=80",
-      videoSrc: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
       duration: "0:30",
       category: "Video Editing"
     }
   ];
-
-  const handleMediaClick = (type: 'video' | 'poster', src: string, title: string) => {
-    setSelectedMedia({ type, src, title });
-  };
-
-  const closePreview = () => {
-    setSelectedMedia(null);
-  };
 
   return (
     <div className="min-h-screen pt-20">
@@ -124,7 +65,7 @@ const Portfolio = () => {
             Our <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">Portfolio</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in animation-delay-300">
-            Showcasing our latest work in web development, digital marketing designs, and video editing. 
+            Showcasing our latest work in web development, video editing, and digital solutions. 
             Each project represents our commitment to quality and innovation.
           </p>
         </div>
@@ -146,9 +87,6 @@ const Portfolio = () => {
                     src={project.image}
                     alt={project.title}
                     className="w-full h-48 object-cover"
-                    loading="lazy"
-                    width="400"
-                    height="200"
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <button className="bg-white text-gray-900 px-4 py-2 rounded-full font-semibold flex items-center space-x-2 hover:bg-gray-100 transition-colors">
@@ -180,54 +118,8 @@ const Portfolio = () => {
         </div>
       </section>
 
-      {/* Digital Marketing Posters */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Digital Marketing Posters</h2>
-            <p className="text-xl text-gray-600">Eye-catching designs that drive engagement and conversions</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {posterProjects.map((project) => (
-              <div key={project.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                <div className="relative group">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-64 object-cover"
-                    loading="lazy"
-                    width="400"
-                    height="300"
-                  />
-                  <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <button 
-                      onClick={() => handleMediaClick('poster', project.image, project.title)}
-                      className="bg-white text-gray-900 px-4 py-2 rounded-full font-semibold flex items-center space-x-2 hover:bg-gray-100 transition-colors"
-                    >
-                      <Eye className="w-4 h-4" />
-                      <span>View Poster</span>
-                    </button>
-                  </div>
-                </div>
-                
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-green-600 bg-green-100 px-2 py-1 rounded">
-                      {project.category}
-                    </span>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">{project.title}</h3>
-                  <p className="text-gray-600">{project.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Video Projects */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Videos Edited</h2>
@@ -242,15 +134,9 @@ const Portfolio = () => {
                     src={project.thumbnail}
                     alt={project.title}
                     className="w-full h-48 object-cover"
-                    loading="lazy"
-                    width="400"
-                    height="200"
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <button 
-                      onClick={() => handleMediaClick('video', project.videoSrc, project.title)}
-                      className="bg-white text-gray-900 px-4 py-2 rounded-full font-semibold flex items-center space-x-2 hover:bg-gray-100 transition-colors"
-                    >
+                    <button className="bg-white text-gray-900 px-4 py-2 rounded-full font-semibold flex items-center space-x-2 hover:bg-gray-100 transition-colors">
                       <Play className="w-4 h-4" />
                       <span>Watch Video</span>
                     </button>
@@ -274,55 +160,6 @@ const Portfolio = () => {
           </div>
         </div>
       </section>
-
-      {/* Media Preview Modal */}
-      {selectedMedia && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="relative w-full max-w-6xl">
-            {/* Title positioned above the content */}
-            <div className="text-center mb-4">
-              <h3 className="text-2xl font-bold text-white bg-black bg-opacity-75 inline-block px-6 py-2 rounded-lg">
-                {selectedMedia.title}
-              </h3>
-            </div>
-            
-            {/* Close button positioned at top-right, outside the content area */}
-            <button
-              onClick={closePreview}
-              className="absolute -top-2 -right-2 z-20 bg-red-500 text-white p-3 rounded-full hover:bg-red-600 transition-colors shadow-lg"
-            >
-              <X className="w-6 h-6" />
-            </button>
-            
-            {/* Media content */}
-            <div className="relative">
-              {selectedMedia.type === 'video' ? (
-                <video
-                  controls
-                  autoPlay
-                  className="w-full h-auto max-h-[80vh] rounded-lg shadow-2xl"
-                  preload="metadata"
-                >
-                  <source src={selectedMedia.src} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              ) : (
-                <img
-                  src={selectedMedia.src}
-                  alt={selectedMedia.title}
-                  className="w-full h-auto max-h-[80vh] object-contain rounded-lg shadow-2xl"
-                />
-              )}
-            </div>
-          </div>
-          
-          {/* Background overlay - click to close */}
-          <div 
-            className="absolute inset-0 -z-10 cursor-pointer"
-            onClick={closePreview}
-          />
-        </div>
-      )}
 
       {/* Call to Action */}
       <section className="py-20 bg-gradient-to-r from-purple-600 to-blue-600">

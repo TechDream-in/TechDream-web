@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
@@ -22,15 +21,8 @@ const Header = () => {
     <header className="fixed top-0 w-full bg-white/90 backdrop-blur-md z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
-          <Link to="/" className="flex items-center space-x-3">
-            <img 
-              src="/lovable-uploads/44a222f8-3888-4a2b-8c93-26bbff6284d3.png" 
-              alt="TechDream Logo" 
-              className="h-8 w-auto"
-            />
-            <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-              TechDream
-            </span>
+          <Link to="/" className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+            DigitalVista
           </Link>
 
           {/* Desktop Navigation */}
