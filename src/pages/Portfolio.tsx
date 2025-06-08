@@ -277,30 +277,23 @@ const Portfolio = () => {
 
       {/* Media Preview Modal */}
       {selectedMedia && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="relative w-full max-w-6xl">
-            {/* Title positioned above the content */}
-            <div className="text-center mb-4">
-              <h3 className="text-2xl font-bold text-white bg-black bg-opacity-75 inline-block px-6 py-2 rounded-lg">
-                {selectedMedia.title}
-              </h3>
-            </div>
-            
-            {/* Close button positioned at top-right, outside the content area */}
+        <div className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4">
+          <div className="relative max-w-4xl max-h-full bg-white rounded-lg overflow-hidden">
             <button
               onClick={closePreview}
-              className="absolute -top-2 -right-2 z-20 bg-red-500 text-white p-3 rounded-full hover:bg-red-600 transition-colors shadow-lg"
+              className="absolute top-4 right-4 z-10 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition-colors"
             >
               <X className="w-6 h-6" />
             </button>
             
-            {/* Media content */}
-            <div className="relative">
+            <div className="p-4">
+              <h3 className="text-xl font-bold text-gray-900 mb-4">{selectedMedia.title}</h3>
+              
               {selectedMedia.type === 'video' ? (
                 <video
                   controls
                   autoPlay
-                  className="w-full h-auto max-h-[80vh] rounded-lg shadow-2xl"
+                  className="w-full max-h-96 rounded-lg"
                   preload="metadata"
                 >
                   <source src={selectedMedia.src} type="video/mp4" />
@@ -310,17 +303,11 @@ const Portfolio = () => {
                 <img
                   src={selectedMedia.src}
                   alt={selectedMedia.title}
-                  className="w-full h-auto max-h-[80vh] object-contain rounded-lg shadow-2xl"
+                  className="w-full max-h-96 object-contain rounded-lg"
                 />
               )}
             </div>
           </div>
-          
-          {/* Background overlay - click to close */}
-          <div 
-            className="absolute inset-0 -z-10 cursor-pointer"
-            onClick={closePreview}
-          />
         </div>
       )}
 
