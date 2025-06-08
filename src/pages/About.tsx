@@ -18,7 +18,7 @@ const About = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="animate-fade-in animation-delay-500">
               <img
-                src="https://images.unsplash.com/photo-1556075798-4825dfaaf498?auto=format&fit=crop&w=800&q=80"
+                src="/media/modern_office_workspace.avif"
                 alt="Modern office workspace"
                 className="rounded-lg shadow-lg"
               />
