@@ -17,13 +17,13 @@ const Home = () => {
         </div>
 
         <div className="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-          <div className="flex justify-center mb-8">
+          {/* <div className="flex justify-center mb-8">
             <img 
-              src="/media/d88f30e2-2782-4ff7-a110-3819b0e9f310.png" 
+              src="media/logo-techdream-detail.png" 
               alt="TechDream Logo" 
-              className="h-24 w-auto animate-fade-in"
+              className="h-32 w-auto animate-fade-in"
             />
-          </div>
+          </div> */}
           
           <h1 className="text-5xl md:text-7xl font-bold mb-8 animate-fade-in animation-delay-200">
             Transform Your

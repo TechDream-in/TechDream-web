@@ -9,13 +9,10 @@ const Footer = () => {
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center space-x-3 mb-4">
               <img 
-                src="/media/284387be-083c-4416-9f40-e7911c09402d.png" 
+                src="/media/logo-techdream.png" 
                 alt="TechDream Logo" 
-                className="h-8 w-auto"
+                className="h-10 w-auto"
               />
-              <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                TechDream
-              </h3>
             </div>
             <p className="text-gray-300 mb-4 max-w-md">
               Transforming businesses through innovative digital solutions. We create stunning websites, 
