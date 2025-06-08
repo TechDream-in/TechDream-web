@@ -24,7 +24,7 @@ const sanitizeInput = (input: string): string => {
 };
 
 const validateFormData = (formData: any) => {
-  const errors = [];
+  const errors: string[] = [];
   
   if (!formData.name || formData.name.length < 2 || formData.name.length > 100) {
     errors.push("Name must be between 2 and 100 characters");
@@ -138,7 +138,7 @@ const handler = async (req) => {
     }
 
     // Send notification email to help@digitalvista.com
-    const notificationEmail = await resend.emails.send({
+    await resend.emails.send({
       from: "DigitalVista Contact <noreply@codetechinfosystem.com>",
       to: [
         "sourabh.patware+help@codetechinfosystem.com"
@@ -185,7 +185,7 @@ const handler = async (req) => {
     console.log('Notification email sent successfully');
 
     // Send confirmation email to the user
-    const confirmationEmail = await resend.emails.send({
+    await resend.emails.send({
       from: "DigitalVista Team <noreply@codetechinfosystem.com>",
       to: [
         sanitizedData.email
