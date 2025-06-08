@@ -11,8 +11,8 @@ This is a React project built with Vite, TypeScript, and Tailwind CSS, using the
 Make sure you have **Node.js v22** and **npm** installed.
 
 ```sh
-git clone <YOUR_GIT_URL>
-cd <YOUR_PROJECT_NAME>
+git clone https://github.com/TechDream-in/TechDream-web.git
+cd TechDream-web
 npm install
 npm run dev
 ```
