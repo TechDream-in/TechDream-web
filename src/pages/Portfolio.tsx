@@ -37,42 +37,42 @@ const Portfolio = () => {
       id: 1,
       title: "Fitness Club Campaign",
       description: "High-impact poster design for gym membership drive",
-      image: "/lovable-uploads/8ae60bcd-0276-4d1e-a1e3-cf8beb66d60d.png",
+      image: "/media/8ae60bcd-0276-4d1e-a1e3-cf8beb66d60d.png",
       category: "Digital Marketing"
     },
     {
       id: 2,
       title: "Fitness Motivation Series",
       description: "Social media poster for fitness club engagement",
-      image: "/lovable-uploads/9594843c-de10-4599-8dab-bb197d770255.png",
+      image: "/media/9594843c-de10-4599-8dab-bb197d770255.png",
       category: "Digital Marketing"
     },
     {
       id: 3,
       title: "Job Recruitment Campaign",
       description: "Professional hiring poster for tech positions",
-      image: "/lovable-uploads/a07ea9d2-8d9b-4939-8d1b-30fb4167bbd1.png",
+      image: "/media/a07ea9d2-8d9b-4939-8d1b-30fb4167bbd1.png",
       category: "Digital Marketing"
     },
     {
       id: 4,
       title: "Digital Marketing Agency",
       description: "Corporate branding poster for marketing services",
-      image: "/lovable-uploads/1084f4d9-d3a5-40ba-af30-0c8df0870937.png",
+      image: "/media/1084f4d9-d3a5-40ba-af30-0c8df0870937.png",
       category: "Digital Marketing"
     },
     {
       id: 5,
       title: "Educational Course Promotion",
       description: "SQL development course marketing material",
-      image: "/lovable-uploads/e1e0305c-8c33-4502-a416-830d52a22dcf.png",
+      image: "/media/e1e0305c-8c33-4502-a416-830d52a22dcf.png",
       category: "Digital Marketing"
     },
     {
       id: 6,
       title: "Coffee Brand Campaign",
       description: "Premium coffee product promotion poster",
-      image: "/lovable-uploads/9b0988a7-7a3c-488c-951a-3c6e9412f43f.png",
+      image: "/media/9b0988a7-7a3c-488c-951a-3c6e9412f43f.png",
       category: "Digital Marketing"
     }
   ];

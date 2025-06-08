@@ -24,7 +24,7 @@ const Header = () => {
         <div className="flex justify-between items-center py-4">
           <Link to="/" className="flex items-center space-x-3">
             <img 
-              src="/lovable-uploads/44a222f8-3888-4a2b-8c93-26bbff6284d3.png" 
+              src="/media/44a222f8-3888-4a2b-8c93-26bbff6284d3.png" 
               alt="TechDream Logo" 
               className="h-8 w-auto"
             />
