@@ -26,44 +26,44 @@ const sanitizeInput = (input: string | undefined): string => {
 
 const validateFormData = (formData: Record<string, any>) => {
   const errors: string[] = [];
-  
+
   if (!formData.name || formData.name.length < 2 || formData.name.length > 100) {
     errors.push("Name must be between 2 and 100 characters");
   }
-  
+
   if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
     errors.push("Valid email address is required");
   }
-  
+
   if (formData.phone && formData.phone.length > 20) {
     errors.push("Phone number is too long");
   }
-  
+
   if (!formData.service || formData.service.length < 1) {
     errors.push("Service selection is required");
   }
-  
+
   if (!formData.message || formData.message.length < 10 || formData.message.length > 2000) {
     errors.push("Message must be between 10 and 2000 characters");
   }
-  
+
   return errors;
 };
 
 const checkRateLimit = (clientIP: string): boolean => {
   const now = Date.now();
   const clientRequests = rateLimitStore.get(clientIP) || [];
-  
+
   // Remove expired requests
   const validRequests = clientRequests.filter((t) => now - t < RATE_LIMIT_WINDOW);
   if (validRequests.length >= MAX_REQUESTS_PER_HOUR) {
     return false;
   }
-  
+
   // Add current request
   validRequests.push(now);
   rateLimitStore.set(clientIP, validRequests);
-  
+
   return true;
 };
 
@@ -239,7 +239,7 @@ const handler = async (req) => {
     });
   } catch (error) {
     console.error("Error in contact form submission:", error);
-    
+
     // Don't expose internal error details
     return new Response(JSON.stringify({
       error: "An error occurred while processing your request. Please try again later."
