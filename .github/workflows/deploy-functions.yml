@@ -3,7 +3,7 @@ on:
   push:
     branches: [main]
     paths:
-      - "superbase/functions/**"
+      - "supabase/functions/**"
 
 jobs:
   deploy:
