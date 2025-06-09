@@ -1,7 +1,6 @@
-
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
-import DOMPurify from "npm:dompurify@latest";
+import sanitizeHtml from 'npm:sanitize-html@2.17.0';
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 const MAIL_FORM = Deno.env.get("MAIL_FORM");
@@ -22,7 +21,7 @@ const MAX_REQUESTS_PER_HOUR = 3;
 
 const sanitizeInput = (input: string): string => {
   if (typeof input !== 'string') return '';
-  return DOMPurify.sanitize(input.trim());
+  return sanitizeHtml(input.trim());
 };
 
 const validateFormData = (formData: any) => {
