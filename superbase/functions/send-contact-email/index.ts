@@ -3,10 +3,10 @@ import { Resend } from "npm:resend@2.0.0";
 import sanitizeHtml from 'npm:sanitize-html@2.17.0';
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
-const MAIL_FORM = Deno.env.get("MAIL_FORM");
+const MAIL_FROM = Deno.env.get("MAIL_FORM");
 const HELP_MAIL_TO = Deno.env.get("HELP_MAIL_TO");
 
-const corsHeaders = {
+const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
   "X-Frame-Options": "DENY",
@@ -15,16 +15,16 @@ const corsHeaders = {
 };
 
 // In-memory rate limiting store (consider using Supabase for production)
-const rateLimitStore = new Map();
+const rateLimitStore = new Map<string, number[]>();
 const RATE_LIMIT_WINDOW = 60 * 60 * 1000; // 1 hour
 const MAX_REQUESTS_PER_HOUR = 3;
 
-const sanitizeInput = (input: string): string => {
-  if (typeof input !== 'string') return '';
+const sanitizeInput = (input: string | undefined): string => {
+  if (!input || typeof input !== 'string') return '';
   return sanitizeHtml(input.trim());
 };
 
-const validateFormData = (formData: any) => {
+const validateFormData = (formData: Record<string, any>) => {
   const errors: string[] = [];
   
   if (!formData.name || formData.name.length < 2 || formData.name.length > 100) {
@@ -55,10 +55,7 @@ const checkRateLimit = (clientIP: string): boolean => {
   const clientRequests = rateLimitStore.get(clientIP) || [];
   
   // Remove expired requests
-  const validRequests = clientRequests.filter((timestamp: number) => 
-    now - timestamp < RATE_LIMIT_WINDOW
-  );
-  
+  const validRequests = clientRequests.filter((t) => now - t < RATE_LIMIT_WINDOW);
   if (validRequests.length >= MAX_REQUESTS_PER_HOUR) {
     return false;
   }
@@ -73,26 +70,29 @@ const checkRateLimit = (clientIP: string): boolean => {
 const handler = async (req) => {
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
-    return new Response(null, {
-      headers: corsHeaders
-    });
+    return new Response(null, { headers: CORS_HEADERS });
   }
+
+  const RESPONSE_HEADERS = {
+    "Content-Type": "application/json",
+    ...CORS_HEADERS
+  };
 
   try {
     // Get client IP for rate limiting
-    const clientIP = req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || "unknown";
-    
+    const clientIP =
+      req.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
+      req.headers.get("x-real-ip") ||
+      "unknown";
+
     // Check rate limit
     if (!checkRateLimit(clientIP)) {
-      console.log(`Rate limit exceeded for IP: ${clientIP}`);
+      console.warn(`Rate limit exceeded for IP: ${clientIP}`);
       return new Response(JSON.stringify({
         error: "Too many requests. Please try again later."
       }), {
         status: 429,
-        headers: {
-          "Content-Type": "application/json",
-          ...corsHeaders
-        }
+        headers: RESPONSE_HEADERS
       });
     }
 
@@ -107,10 +107,7 @@ const handler = async (req) => {
         details: validationErrors
       }), {
         status: 400,
-        headers: {
-          "Content-Type": "application/json",
-          ...corsHeaders
-        }
+        headers: RESPONSE_HEADERS
       });
     }
 
@@ -118,9 +115,9 @@ const handler = async (req) => {
     const sanitizedData = {
       name: sanitizeInput(formData.name),
       email: sanitizeInput(formData.email),
-      phone: sanitizeInput(formData.phone || ''),
+      phone: sanitizeInput(formData.phone),
       service: sanitizeInput(formData.service),
-      message: sanitizeInput(formData.message)
+      message: sanitizeInput(formData.message),
     };
 
     // Check for honeypot field (if present, it's likely a bot)
@@ -131,16 +128,13 @@ const handler = async (req) => {
         success: true
       }), {
         status: 200,
-        headers: {
-          "Content-Type": "application/json",
-          ...corsHeaders
-        }
+        headers: RESPONSE_HEADERS
       });
     }
 
     // Send notification email to help@techdream.in
     await resend.emails.send({
-      from: MAIL_FORM,
+      from: MAIL_FROM,
       to: [HELP_MAIL_TO],
       reply_to: sanitizedData.email,
       subject: `New Contact Form Submission - ${sanitizedData.service}`,
@@ -185,7 +179,7 @@ const handler = async (req) => {
 
     // Send confirmation email to the user
     await resend.emails.send({
-      from: MAIL_FORM,
+      from: MAIL_FROM,
       to: [sanitizedData.email],
       subject: "Thank you for contacting TechDream!",
       html: `
@@ -241,10 +235,7 @@ const handler = async (req) => {
       message: "Message sent successfully"
     }), {
       status: 200,
-      headers: {
-        "Content-Type": "application/json",
-        ...corsHeaders
-      }
+      headers: RESPONSE_HEADERS
     });
   } catch (error) {
     console.error("Error in contact form submission:", error);
@@ -254,10 +245,7 @@ const handler = async (req) => {
       error: "An error occurred while processing your request. Please try again later."
     }), {
       status: 500,
-      headers: {
-        "Content-Type": "application/json",
-        ...corsHeaders
-      }
+      headers: RESPONSE_HEADERS
     });
   }
 };
