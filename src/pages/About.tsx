@@ -7,7 +7,7 @@ const About = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 animate-fade-in">
-              About <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">DigitalVista</span>
+              About <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">TechDream</span>
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in animation-delay-300">
               We are a passionate team of digital experts, fresh in the market and dedicated to helping businesses thrive in the digital world 
@@ -28,7 +28,7 @@ const About = () => {
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
               <p className="text-gray-600 mb-6">
                 Founded with a vision to bridge the gap between traditional businesses and the digital future, 
-                DigitalVista is a new player in the market with fresh ideas and innovative approaches.
+                TechDream is a new player in the market with fresh ideas and innovative approaches.
               </p>
               <p className="text-gray-600 mb-6">
                 As a newly established team of passionate developers, designers, and digital strategists, 

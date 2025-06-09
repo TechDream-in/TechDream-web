@@ -4,6 +4,8 @@ import { Resend } from "npm:resend@2.0.0";
 import DOMPurify from "npm:dompurify@latest";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+const MAIL_FORM = Deno.env.get("MAIL_FORM");
+const HELP_MAIL_TO = Deno.env.get("HELP_MAIL_TO");
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -137,12 +139,10 @@ const handler = async (req) => {
       });
     }
 
-    // Send notification email to help@digitalvista.com
+    // Send notification email to help@techdream.in
     await resend.emails.send({
-      from: "DigitalVista Contact <noreply@codetechinfosystem.com>",
-      to: [
-        "sourabh.patware+help@codetechinfosystem.com"
-      ],
+      from: MAIL_FORM,
+      to: [HELP_MAIL_TO],
       reply_to: sanitizedData.email,
       subject: `New Contact Form Submission - ${sanitizedData.service}`,
       html: `
@@ -175,7 +175,7 @@ const handler = async (req) => {
               ${sanitizedData.message}
             </div>
             <p style="margin-top: 20px; color: #666; font-size: 14px;">
-              This email was sent from the DigitalVista contact form.
+              This email was sent from the TechDream contact form.
             </p>
           </div>
         </div>
@@ -186,11 +186,9 @@ const handler = async (req) => {
 
     // Send confirmation email to the user
     await resend.emails.send({
-      from: "DigitalVista Team <noreply@codetechinfosystem.com>",
-      to: [
-        sanitizedData.email
-      ],
-      subject: "Thank you for contacting DigitalVista!",
+      from: MAIL_FORM,
+      to: [sanitizedData.email],
+      subject: "Thank you for contacting TechDream!",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
           <div style="background: linear-gradient(135deg, #9333ea 0%, #2563eb 100%); color: white; padding: 30px; border-radius: 8px 8px 0 0; text-align: center;">
@@ -200,7 +198,7 @@ const handler = async (req) => {
           <div style="background: white; padding: 30px; border-radius: 0 0 8px 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
             <h2 style="color: #333; margin-top: 0;">Hello ${sanitizedData.name}!</h2>
             <p style="color: #666; line-height: 1.6; font-size: 16px;">
-              Thank you for reaching out to DigitalVista. We have successfully received your inquiry about 
+              Thank you for reaching out to TechDream. We have successfully received your inquiry about 
               <strong style="color: #9333ea;">${sanitizedData.service}</strong> and appreciate your interest in our services.
             </p>
             <div style="background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%); padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #9333ea;">
@@ -228,10 +226,10 @@ const handler = async (req) => {
             <div style="text-align: center;">
               <p style="color: #999; font-size: 14px; margin: 0;">
                 Best regards,<br>
-                <strong style="color: #9333ea;">The DigitalVista Team</strong>
+                <strong style="color: #9333ea;">The TechDream Team</strong>
               </p>
               <p style="color: #ccc; font-size: 12px; margin: 10px 0 0 0;">
-                This email was sent from DigitalVista. If you didn't submit a contact form, please ignore this email.
+                This email was sent from TechDream. If you didn't submit a contact form, please ignore this email.
               </p>
             </div>
           </div>
