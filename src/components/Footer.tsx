@@ -6,20 +6,19 @@ const Footer = () => {
     <footer className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="col-span-1 md:col-span-2">
-            <div className="flex items-center space-x-3 mb-4">
-              <img 
-                src="/media/logo-techdream.png" 
-                alt="TechDream Logo" 
-                className="h-10 w-auto"
+          <div className="col-span-1 -mt-14 md:col-span-2">
+            <div className="flex justify-center">
+              <img
+                src="/media/footor_logo.png"
+                alt="TechDream Logo"
+                className=" h-60 -mb-12 w-auto" 
               />
             </div>
-            <p className="text-gray-300 mb-4 max-w-md">
-              Transforming businesses through innovative digital solutions. We create stunning websites, 
+            <p className="text-gray-300 max-w-md mx-auto text-center md:text-left">
+              Transforming businesses through innovative digital solutions. We create stunning websites,
               drive digital marketing success, and bring your vision to life.
             </p>
           </div>
-
           <div>
             <h4 className="text-lg font-semibold mb-4">Services</h4>
             <ul className="space-y-2 text-gray-300">
@@ -30,7 +29,6 @@ const Footer = () => {
               <li>Animation</li>
             </ul>
           </div>
-
           <div>
             <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
@@ -42,6 +40,7 @@ const Footer = () => {
         </div>
       </div>
     </footer>
+
   );
 };
 
