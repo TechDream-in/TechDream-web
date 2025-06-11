@@ -9,7 +9,7 @@ const Footer = () => {
           <div className="col-span-1 -mt-14 md:col-span-2">
             <div className="flex justify-center">
               <img
-                src="/media/5.png"
+                src="/media/footor_logo.png"
                 alt="TechDream Logo"
                 className=" h-60 -mb-12 w-auto" 
               />
