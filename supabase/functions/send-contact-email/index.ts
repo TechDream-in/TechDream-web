@@ -181,6 +181,7 @@ const handler = async (req) => {
     await resend.emails.send({
       from: MAIL_FROM,
       to: [sanitizedData.email],
+      reply_to: HELP_MAIL_TO,
       subject: "Thank you for contacting TechDream!",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
