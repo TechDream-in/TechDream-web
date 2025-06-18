@@ -1,34 +1,39 @@
-
+import { link } from 'fs';
 import { Play, ExternalLink, Eye, X } from 'lucide-react';
 import { useState } from 'react';
 
 const Portfolio = () => {
-  const [selectedMedia, setSelectedMedia] = useState<{type: 'video' | 'poster', src: string, title: string} | null>(null);
+  const [selectedMedia, setSelectedMedia] = useState<{ type: 'video' | 'poster', src: string, title: string } | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const webProjects = [
     {
       id: 1,
-      title: "E-commerce Store",
-      description: "Modern online store with shopping cart and payment integration",
-      image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=800&q=80",
+      title: "ZANDA360",
+      description: "ZANDA360 is a user-friendly, cost-effective learning platform for educators and organizations to create and deliver engaging training.",
+      image: "media/ZANDA360-img1.jpeg",
       category: "Web Development",
-      technologies: ["React", "Node.js", "MongoDB"]
+      technologies: ["Next.js", "Rails", "GraphQL", "PostgreSQL"],
+      link: "https://elearningplus.co.uk/zanda-360-overview/"
     },
     {
       id: 2,
-      title: "Corporate Website",
-      description: "Professional business website with CMS integration",
-      image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=800&q=80",
+      title: "Reveza ",
+      description: "Elevate Real-time Customer Retention and Enagagement Web Solution",
+      image: "media/Reveza-projectimg.jpeg",
       category: "Web Development",
-      technologies: ["WordPress", "PHP", "MySQL"]
+      technologies: ["Rails", "JS", "PostgreSQL"],
+      link: "www.reveza.com/"
     },
     {
       id: 3,
-      title: "Portfolio Website",
-      description: "Creative portfolio site for a digital artist",
-      image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
+      title: "Channel Bay",
+      description: "Channel Bay connects your Shopify and Amazon stores, giving you a unified platform to manage inventory and orders across all your sales channels.",
+      image: "media/ChannelBay-img1.jpeg",
       category: "Web Development",
-      technologies: ["HTML5", "CSS3", "JavaScript"]
+      technologies: ["Node", "ReactJS", "MongoDB"],
+      link: "https://channelbay.io/"
+
     }
   ];
 
@@ -108,6 +113,7 @@ const Portfolio = () => {
   ];
 
   const handleMediaClick = (type: 'video' | 'poster', src: string, title: string) => {
+    setIsLoading(true);
     setSelectedMedia({ type, src, title });
   };
 
@@ -124,7 +130,7 @@ const Portfolio = () => {
             Our <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">Portfolio</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in animation-delay-300">
-            Showcasing our latest work in web development, digital marketing designs, and video editing. 
+            Showcasing our latest work in web development, digital marketing designs, and video editing.
             Each project represents our commitment to quality and innovation.
           </p>
         </div>
@@ -151,13 +157,18 @@ const Portfolio = () => {
                     height="200"
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <button className="bg-white text-gray-900 px-4 py-2 rounded-full font-semibold flex items-center space-x-2 hover:bg-gray-100 transition-colors">
+                    <a
+                      href={project.link.startsWith("http") ? project.link : `https://${project.link}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-white text-gray-900 px-4 py-2 rounded-full font-semibold flex items-center space-x-2 hover:bg-gray-100 transition-colors"
+                    >
                       <ExternalLink className="w-4 h-4" />
                       <span>View Project</span>
-                    </button>
+                    </a>
                   </div>
                 </div>
-                
+
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-sm font-medium text-purple-600 bg-purple-100 px-2 py-1 rounded">
@@ -201,7 +212,7 @@ const Portfolio = () => {
                     height="300"
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <button 
+                    <button
                       onClick={() => handleMediaClick('poster', project.image, project.title)}
                       className="bg-white text-gray-900 px-4 py-2 rounded-full font-semibold flex items-center space-x-2 hover:bg-gray-100 transition-colors "
                     >
@@ -210,7 +221,7 @@ const Portfolio = () => {
                     </button>
                   </div>
                 </div>
-                
+
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-sm font-medium text-green-600 bg-green-100 px-2 py-1 rounded">
@@ -247,7 +258,7 @@ const Portfolio = () => {
                     height="200"
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <button 
+                    <button
                       onClick={() => handleMediaClick('video', project.videoSrc, project.title)}
                       className="bg-white text-gray-900 px-4 py-2 rounded-full font-semibold flex items-center space-x-2 hover:bg-gray-100 transition-colors"
                     >
@@ -259,7 +270,7 @@ const Portfolio = () => {
                     {project.duration}
                   </div>
                 </div>
-                
+
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-sm font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded">
@@ -275,35 +286,43 @@ const Portfolio = () => {
         </div>
       </section>
 
-      {/* Media Preview Modal */}
       {selectedMedia && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4">
-          <div className="relative max-w-4xl max-h-full bg-white rounded-lg overflow-hidden">
+        <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
+          <div className="relative max-w-4xl max-h-full bg-slate-50 rounded-lg overflow-hidden">
             <button
               onClick={closePreview}
               className="absolute top-4 right-4 z-10 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition-colors"
             >
               <X className="w-6 h-6" />
             </button>
-            
             <div className="p-4">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">{selectedMedia.title}</h3>
-              
+              <h3 className="text-xl font-bold  mb-4">{selectedMedia.title}</h3>
               {selectedMedia.type === 'video' ? (
-                <video
-                  controls
-                  autoPlay
-                  className="w-full max-h-96 rounded-lg"
-                  preload="metadata"
-                >
-                  <source src={selectedMedia.src} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
+                <div className="relative w-fit max-h-[800px]">
+                  {isLoading && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
+                      <span className="text-gray-600 animate-pulse text-lg font-semibold">
+                        <img src="https://media.tenor.com/IfbOs_yh89AAAAAM/loading-buffering.gif" />
+                      </span>
+                    </div>
+                  )}
+                  <video
+                    controls
+                    autoPlay
+                    className="w-fit max-h-[800px] rounded-lg"
+                    preload="metadata"
+                    onCanPlay={() => setIsLoading(false)}
+                  >
+                    <source src={selectedMedia.src} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
               ) : (
                 <img
                   src={selectedMedia.src}
                   alt={selectedMedia.title}
-                  className="w-full max-h-96 object-contain rounded-lg"
+                  className={`object-contain rounded-lg
+                  ${selectedMedia.type === 'poster' ? 'w-[550px] h-[540px]' : 'w-full max-h-96'}`}
                 />
               )}
             </div>
