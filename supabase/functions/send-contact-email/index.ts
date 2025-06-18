@@ -133,103 +133,101 @@ const handler = async (req) => {
     }
 
     // Send notification email to help@techdream.in
-    await resend.emails.send({
-      from: MAIL_FROM,
-      to: [HELP_MAIL_TO],
-      reply_to: sanitizedData.email,
-      subject: `New Contact Form Submission - ${sanitizedData.service}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
-          <div style="background: linear-gradient(135deg, #9333ea 0%, #2563eb 100%); color: white; padding: 20px; border-radius: 8px 8px 0 0;">
-            <h1 style="margin: 0; font-size: 24px;">New Contact Form Submission</h1>
-          </div>
-          <div style="background: white; padding: 30px; border-radius: 0 0 8px 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-            <h2 style="color: #333; margin-top: 0;">Contact Details</h2>
-            <table style="width: 100%; border-collapse: collapse;">
-              <tr>
-                <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #666;">Name:</td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${sanitizedData.name}</td>
-              </tr>
-              <tr>
-                <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #666;">Email:</td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${sanitizedData.email}</td>
-              </tr>
-              <tr>
-                <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #666;">Phone:</td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${sanitizedData.phone || 'Not provided'}</td>
-              </tr>
-              <tr>
-                <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #666;">Service:</td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${sanitizedData.service}</td>
-              </tr>
-            </table>
-            <h3 style="color: #333; margin-top: 20px;">Message:</h3>
-            <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; border-left: 4px solid #9333ea;">
-              ${sanitizedData.message}
+    await resend.batch.send([
+      {
+        from: MAIL_FROM,
+        to: [HELP_MAIL_TO],
+        reply_to: sanitizedData.email,
+        subject: `New Contact Form Submission - ${sanitizedData.service}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
+            <div style="background: linear-gradient(135deg, #9333ea 0%, #2563eb 100%); color: white; padding: 20px; border-radius: 8px 8px 0 0;">
+              <h1 style="margin: 0; font-size: 24px;">New Contact Form Submission</h1>
             </div>
-            <p style="margin-top: 20px; color: #666; font-size: 14px;">
-              This email was sent from the TechDream contact form.
-            </p>
+            <div style="background: white; padding: 30px; border-radius: 0 0 8px 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+              <h2 style="color: #333; margin-top: 0;">Contact Details</h2>
+              <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                  <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #666;">Name:</td>
+                  <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${sanitizedData.name}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #666;">Email:</td>
+                  <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${sanitizedData.email}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #666;">Phone:</td>
+                  <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${sanitizedData.phone || 'Not provided'}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #666;">Service:</td>
+                  <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${sanitizedData.service}</td>
+                </tr>
+              </table>
+              <h3 style="color: #333; margin-top: 20px;">Message:</h3>
+              <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; border-left: 4px solid #9333ea;">
+                ${sanitizedData.message}
+              </div>
+              <p style="margin-top: 20px; color: #666; font-size: 14px;">
+                This email was sent from the TechDream contact form.
+              </p>
+            </div>
           </div>
-        </div>
-      `
-    });
+        `
+      },
+      {
+        from: MAIL_FROM,
+        to: [sanitizedData.email],
+        reply_to: HELP_MAIL_TO,
+        subject: "Thank you for contacting TechDream!",
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
+            <div style="background: linear-gradient(135deg, #9333ea 0%, #2563eb 100%); color: white; padding: 30px; border-radius: 8px 8px 0 0; text-align: center;">
+              <h1 style="margin: 0; font-size: 28px;">Thank You!</h1>
+              <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;">We've received your message</p>
+            </div>
+            <div style="background: white; padding: 30px; border-radius: 0 0 8px 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+              <h2 style="color: #333; margin-top: 0;">Hello ${sanitizedData.name}!</h2>
+              <p style="color: #666; line-height: 1.6; font-size: 16px;">
+                Thank you for reaching out to TechDream. We have successfully received your inquiry about 
+                <strong style="color: #9333ea;">${sanitizedData.service}</strong> and appreciate your interest in our services.
+              </p>
+              <div style="background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%); padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #9333ea;">
+                <h3 style="margin: 0 0 10px 0; color: #333;">What happens next?</h3>
+                <ul style="margin: 0; padding-left: 20px; color: #666;">
+                  <li style="margin-bottom: 8px;">Our team will review your message within 2-4 business hours</li>
+                  <li style="margin-bottom: 8px;">You'll receive a personalized response within 24 hours</li>
+                  <li style="margin-bottom: 8px;">We'll schedule a free consultation to discuss your project needs</li>
+                </ul>
+              </div>
+              <p style="color: #666; line-height: 1.6;">
+                In the meantime, feel free to explore our portfolio and learn more about our services.
+              </p>
+              <div style="text-align: center; margin: 30px 0;">
+                <a href="https://techdream.in/services" style="background: linear-gradient(135deg, #9333ea 0%, #2563eb 100%); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block; margin: 0 10px; font-weight: bold; margin-bottom: 20px;">
+                  View Our Services
+                </a>
+                <a href="https://techdream.in/portfolio" style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block; margin: 0 10px; font-weight: bold; margin-bottom: 20px;">
+                  See Our Portfolio
+                </a>
+              </div>
+              <hr style="border: none; height: 1px; background: #eee; margin: 30px 0;">
+              <div style="text-align: center;">
+                <p style="color: #999; font-size: 14px; margin: 0;">
+                  Best regards,<br>
+                  <strong style="color: #9333ea;">The TechDream Team</strong>
+                </p>
+                <p style="color: #ccc; font-size: 12px; margin: 10px 0 0 0;">
+                  This email was sent from TechDream. If you didn't submit a contact form, please ignore this email.
+                </p>
+              </div>
+            </div>
+          </div>
+        `
+      }
+    ]);
 
     console.log('Notification email sent successfully');
-
-    // Send confirmation email to the user
-    await resend.emails.send({
-      from: MAIL_FROM,
-      to: [sanitizedData.email],
-      reply_to: HELP_MAIL_TO,
-      subject: "Thank you for contacting TechDream!",
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
-          <div style="background: linear-gradient(135deg, #9333ea 0%, #2563eb 100%); color: white; padding: 30px; border-radius: 8px 8px 0 0; text-align: center;">
-            <h1 style="margin: 0; font-size: 28px;">Thank You!</h1>
-            <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;">We've received your message</p>
-          </div>
-          <div style="background: white; padding: 30px; border-radius: 0 0 8px 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-            <h2 style="color: #333; margin-top: 0;">Hello ${sanitizedData.name}!</h2>
-            <p style="color: #666; line-height: 1.6; font-size: 16px;">
-              Thank you for reaching out to TechDream. We have successfully received your inquiry about 
-              <strong style="color: #9333ea;">${sanitizedData.service}</strong> and appreciate your interest in our services.
-            </p>
-            <div style="background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%); padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #9333ea;">
-              <h3 style="margin: 0 0 10px 0; color: #333;">What happens next?</h3>
-              <ul style="margin: 0; padding-left: 20px; color: #666;">
-                <li style="margin-bottom: 8px;">Our team will review your message within 2-4 business hours</li>
-                <li style="margin-bottom: 8px;">You'll receive a personalized response within 24 hours</li>
-                <li style="margin-bottom: 8px;">We'll schedule a free consultation to discuss your project needs</li>
-              </ul>
-            </div>
-            <p style="color: #666; line-height: 1.6;">
-              In the meantime, feel free to explore our portfolio and learn more about our services.
-            </p>
-            <div style="text-align: center; margin: 30px 0;">
-              <a href="https://techdream.in/services" style="background: linear-gradient(135deg, #9333ea 0%, #2563eb 100%); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block; margin: 0 10px; font-weight: bold; margin-bottom: 20px;">
-                View Our Services
-              </a>
-              <a href="https://techdream.in/portfolio" style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block; margin: 0 10px; font-weight: bold; margin-bottom: 20px;">
-                See Our Portfolio
-              </a>
-            </div>
-            <hr style="border: none; height: 1px; background: #eee; margin: 30px 0;">
-            <div style="text-align: center;">
-              <p style="color: #999; font-size: 14px; margin: 0;">
-                Best regards,<br>
-                <strong style="color: #9333ea;">The TechDream Team</strong>
-              </p>
-              <p style="color: #ccc; font-size: 12px; margin: 10px 0 0 0;">
-                This email was sent from TechDream. If you didn't submit a contact form, please ignore this email.
-              </p>
-            </div>
-          </div>
-        </div>
-      `
-    });
-
-    console.log('Confirmation email sent successfully');
 
     return new Response(JSON.stringify({
       success: true,
