@@ -45,7 +45,7 @@ const Footer = () => {
               <li className="flex items-center gap-2">
                 <Instagram size={16} />
                 <a
-                  href="https://www.instagram.com/techdream.in?igsh=b202bnB5NzIwaDQ2&utm_source=qr"
+                  href="https://www.instagram.com/techdream.in"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -55,7 +55,7 @@ const Footer = () => {
               <li className="flex items-center gap-2">
                 <Facebook size={16} />
                 <a
-                  href="https://www.facebook.com/share/19JC4J5srU/?mibextid=wwXIfr"
+                  href="https://www.facebook.com/profile.php?id=61577153341463"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -69,10 +69,7 @@ const Footer = () => {
             <ul className="space-y-2">
               <li>+91-9301854870</li>
               <li>info@techdream.in</li>
-              <li>
-                Sector-A,Slice-3,Scheme No-78,Aranya Nagar,
-                Indore, Madhya Pradesh 452010
-              </li>
+              <li>Sector-A, Slice-3, Scheme No-78, Aranya Nagar, Indore, Madhya Pradesh 452010</li>
             </ul>
           </div>
         </div>
