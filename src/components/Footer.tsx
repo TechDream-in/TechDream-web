@@ -55,7 +55,7 @@ const Footer = () => {
               <li className="flex items-center gap-2">
                 <Facebook size={16} />
                 <a
-                  href="https://www.facebook.com/profile.php?id=61577153341463"
+                  href="https://www.facebook.com/techdream.in"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

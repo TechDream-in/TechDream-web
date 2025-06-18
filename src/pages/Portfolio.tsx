@@ -1,4 +1,4 @@
-
+import { link } from 'fs';
 import { Play, ExternalLink, Eye, X } from 'lucide-react';
 import { useState } from 'react';
 
@@ -9,27 +9,31 @@ const Portfolio = () => {
   const webProjects = [
     {
       id: 1,
-      title: "E-commerce Store",
-      description: "Modern online store with shopping cart and payment integration",
-      image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=800&q=80",
+      title: "ZANDA360",
+      description: "ZANDA360 is a user-friendly, cost-effective learning platform for educators and organizations to create and deliver engaging training.",
+      image: "media/ZANDA360-img1.jpeg",
       category: "Web Development",
-      technologies: ["React", "Node.js", "MongoDB"]
+      technologies: ["Next.js", "Rails", "GraphQL", "PostgreSQL"],
+      link: "https://elearningplus.co.uk/zanda-360-overview/"
     },
     {
       id: 2,
-      title: "Corporate Website",
-      description: "Professional business website with CMS integration",
-      image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=800&q=80",
+      title: "Reveza ",
+      description: "Elevate Real-time Customer Retention and Enagagement Web Solution",
+      image: "media/Reveza-projectimg.jpeg",
       category: "Web Development",
-      technologies: ["WordPress", "PHP", "MySQL"]
+      technologies: ["Rails", "JS", "PostgreSQL"],
+      link: "www.reveza.com/"
     },
     {
       id: 3,
-      title: "Portfolio Website",
-      description: "Creative portfolio site for a digital artist",
-      image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
+      title: "Channel Bay",
+      description: "Channel Bay connects your Shopify and Amazon stores, giving you a unified platform to manage inventory and orders across all your sales channels.",
+      image: "media/ChannelBay-img1.jpeg",
       category: "Web Development",
-      technologies: ["HTML5", "CSS3", "JavaScript"]
+      technologies: ["Node", "ReactJS", "MongoDB"],
+      link: "https://channelbay.io/"
+
     }
   ];
 
@@ -153,10 +157,15 @@ const Portfolio = () => {
                     height="200"
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <button className="bg-white text-gray-900 px-4 py-2 rounded-full font-semibold flex items-center space-x-2 hover:bg-gray-100 transition-colors">
+                    <a
+                      href={project.link.startsWith("http") ? project.link : `https://${project.link}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-white text-gray-900 px-4 py-2 rounded-full font-semibold flex items-center space-x-2 hover:bg-gray-100 transition-colors"
+                    >
                       <ExternalLink className="w-4 h-4" />
                       <span>View Project</span>
-                    </button>
+                    </a>
                   </div>
                 </div>
 
@@ -293,7 +302,7 @@ const Portfolio = () => {
                   {isLoading && (
                     <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
                       <span className="text-gray-600 animate-pulse text-lg font-semibold">
-                        <img src="https://media.tenor.com/IfbOs_yh89AAAAAM/loading-buffering.gif"/>
+                        <img src="https://media.tenor.com/IfbOs_yh89AAAAAM/loading-buffering.gif" />
                       </span>
                     </div>
                   )}
