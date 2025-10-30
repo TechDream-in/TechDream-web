@@ -67,7 +67,7 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
             <ul className="space-y-2">
-              <li>+91-9301854870</li>
+              <li>+91-8817125255</li>
               <li>info@techdream.in</li>
               <li>Sector-A, Slice-3, Scheme No-78, Aranya Nagar, Indore, Madhya Pradesh 452010</li>
             </ul>
